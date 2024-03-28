@@ -334,4 +334,264 @@ Philosopher 2 has finished
 Philosopher 4 is eating!
 Philosopher 4 has finished
 ```
+# Program 4 - Continous Allocation
+```
+import java.util.*;
 
+public class Continous_Allocation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int num_files, filename;
+        int[] num_blocks = new int[20];
+        int[] start_block = new int[20];
+        int[][] allocation = new int[20][20];
+        System.out.println("Enter number of files: ");
+        num_files = sc.nextInt();
+        for (int i = 0; i < num_files; i++) {
+            System.out.println("Enter number of block occupied by file " + (i + 1));
+            num_blocks[i] = sc.nextInt();
+            System.out.println("Enter the starting block of the file:");
+            start_block[i] = sc.nextInt();
+            for (int j = 0; j < num_blocks[i]; j++) {
+                allocation[i][j] = start_block[i]++;
+            }
+        }
+        System.out.println("Enter the filename: ");
+        filename = sc.nextInt();
+        System.out.println("Length of the file: " + num_blocks[filename - 1]);
+        System.out.println("Blocks occupied:-");
+        for (int i = 0; i < num_blocks[filename - 1]; i++)
+            System.out.print(allocation[filename - 1][i] + "\t");
+    }
+}
+```
+Output
+```
+Enter number of files: 
+2
+Enter number of block occupied by file 1
+3
+Enter the starting block of the file:
+10
+Enter number of block occupied by file 2
+5
+Enter the starting block of the file:
+20
+Enter the filename:
+2
+Length of the file: 5
+Blocks occupied:-
+20      21      22      23      24
+```
+# Program 4 - Link Allocation
+```java
+import java.util.*;
+
+class File {
+    String filename;
+    int start_block;
+    int num_blocks;
+    int[] block;
+
+    File() {
+        block = new int[10];
+    }
+}
+
+public class Link_Allocation {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the number of files: ");
+        int num_files = sc.nextInt();
+        File[] f = new File[10];
+        for (int i = 0; i < num_files; i++) {
+            f[i] = new File();
+            System.out.print("Enter file name: ");
+            f[i].filename = sc.next();
+            System.out.print("Enter starting block: ");
+            f[i].start_block = sc.nextInt();
+            f[i].block[0] = f[i].start_block;
+            System.out.print("Enter number of blocks: ");
+            f[i].num_blocks = sc.nextInt();
+            System.out.println("Enter block numbers: ");
+            for (int j = 1; j <= f[i].num_blocks; j++) {
+                f[i].block[j] = sc.nextInt();
+            }
+        }
+
+        System.out.println("File\tStart\tSize\tBlock");
+        for (int i = 0; i < num_files; i++) {
+            System.out.print(f[i].filename + "\t" + f[i].start_block + "\t" + f[i].num_blocks + "\t");
+            for (int j = 1; j < f[i].num_blocks; j++) {
+                System.out.print((f[i].block[j]) + "-->");
+            }
+            System.out.println(f[i].block[f[i].num_blocks]);
+        }
+    }
+}
+```
+Output
+```
+Enter the number of files: 
+2
+Enter file name: abc
+Enter starting block: 5
+Enter number of blocks: 3
+Enter block numbers:
+5
+8
+3
+Enter file name: xyz
+Enter starting block: 2
+Enter number of blocks: 2
+Enter block numbers:
+2
+4
+File    Start   Size    Block
+abc     5       3       5-->8-->3
+xyz     2       2       2-->4
+```
+# Program 5 - Worst Fit
+```java
+public class Worst_Fit {
+    static void worstFit(int blocksize[], int blocks, int processes, int processSizes[]) {
+        int allocation[] = new int[processes];
+        for (int i = 0; i < allocation.length; i++)
+            allocation[i] = -1;
+        for (int i = 0; i < processes; i++) {
+            int wstIdx = -1;
+            for (int j = 0; j < blocks; j++) {
+                if (blocksize[j] >= processSizes[i]) {
+                    if (wstIdx == -1)
+                        wstIdx = j;
+                    else if (blocksize[wstIdx] < blocksize[j])
+                        wstIdx = j;
+                }
+            }
+            if (wstIdx != -1) {
+                allocation[i] = wstIdx;
+                blocksize[wstIdx] -= processSizes[i];
+            }
+        }
+        System.out.println("\nProcess No\tProcess Size\tBlock No");
+        for (int i = 0; i < processes; i++) {
+            System.out.print((i + 1) + "\t\t" + processSizes[i] + "\t\t");
+            if (allocation[i] != -1)
+                System.out.print(allocation[i] + 1);
+            else
+                System.out.print("Not Allocated");
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        int blockSize[] = { 100, 500, 200, 300, 600 };
+        int processSize[] = { 212, 417, 112, 426 };
+        int blocks = blockSize.length;
+        int processes = processSize.length;
+        worstFit(blockSize, blocks, processes, processSize);
+    }
+}
+```
+Output
+```
+Process No      Process Size    Block No
+1               212             5
+2               417             2
+3               112             5
+4               426             Not Allocated
+```
+# Program 5 - Best Fit
+```java
+public class Best_Fit {
+    static void bestFit(int blocksize[], int blocks, int processes, int processSizes[]) {
+        int allocation[] = new int[processes];
+        for (int i = 0; i < allocation.length; i++)
+            allocation[i] = -1;
+        for (int i = 0; i < processes; i++) {
+            int bestIdx = -1;
+            for (int j = 0; j < blocks; j++) {
+                if (blocksize[j] >= processSizes[i]) {
+                    if (bestIdx == -1)
+                        bestIdx = j;
+                    else if (blocksize[bestIdx] > blocksize[j])
+                        bestIdx = j;
+                }
+            }
+            if (bestIdx != -1) {
+                allocation[i] = bestIdx;
+                blocksize[bestIdx] -= processSizes[i];
+            }
+        }
+        System.out.println("\nProcess No\tProcess Size\tBlock No");
+        for (int i = 0; i < processes; i++) {
+            System.out.print((i + 1) + "\t\t" + processSizes[i] + "\t\t");
+            if (allocation[i] != -1)
+                System.out.print(allocation[i] + 1);
+            else
+                System.out.print("Not Allocated");
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        int blockSize[] = { 100, 500, 200, 300, 600 };
+        int processSize[] = { 212, 417, 112, 426 };
+        int blocks = blockSize.length;
+        int processes = processSize.length;
+        bestFit(blockSize, blocks, processes, processSize);
+    }
+}
+```
+Output
+```
+Process No      Process Size    Block No
+1               212             4
+2               417             2
+3               112             3
+4               426             5
+```
+# Program 5 - First Fit
+```java
+public class First_Fit {
+    static void firstFit(int blocksize[], int blocks, int processes, int processSizes[]) {
+        int allocation[] = new int[processes];
+        for (int i = 0; i < allocation.length; i++)
+            allocation[i] = -1;
+        for (int i = 0; i < processes; i++) {
+            for (int j = 0; j < blocks; j++) {
+                if (blocksize[j] >= processSizes[i]) {
+                    allocation[i] = j;
+                    blocksize[j] -= processSizes[i];
+                    break;
+                }
+            }
+        }
+        System.out.println("\nProcess No\tProcess Size\tBlock No");
+        for (int i = 0; i < processes; i++) {
+            System.out.print((i + 1) + "\t\t" + processSizes[i] + "\t\t");
+            if (allocation[i] != -1)
+                System.out.print(allocation[i] + 1);
+            else
+                System.out.print("Not Allocated");
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        int blockSize[] = { 100, 75, 200, 300, 400 };
+        int processSize[] = { 50, 100, 200, 60 };
+        int blocks = blockSize.length;
+        int processes = processSize.length;
+        firstFit(blockSize, blocks, processes, processSize);
+    }
+}
+```
+Output
+```
+Process No      Process Size    Block No
+1               50              1
+2               100             3
+3               200             4
+4               60              2
+```
