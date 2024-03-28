@@ -1,4 +1,4 @@
->Have used proper variable names for easier understanding, feel free to user shorter variables for convenience.
+>I Have used complete variable names for easier understanding, feel free to use shorter variables for convenience.
 # Program 1
 FCFS
 ```java
