@@ -1,6 +1,5 @@
 >I Have used complete variable names for easier understanding, feel free to use shorter variables for convenience.
-# Program 1
-FCFS
+# Program 1 - FCFS
 ```java
     import java.util.*;
 
@@ -91,8 +90,7 @@ PROCESS ARRIVAL BURST   COMPLETION      WAITING TURNAROUND
 Average Waiting time = 17.0
 Average Waiting time = 27.333334
 ```
-# Program 1 
-SJF
+# Program 1 - SJF
 ```java
 import java.util.*;
 
