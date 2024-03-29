@@ -508,24 +508,26 @@ import java.util.*;
 
 public class DiskScheduling {
     static final int MAX_CYLINDER = 199; // Maximum cylinder number
-    static final int MIN_CYLINDER = 0;   // Minimum cylinder number
+    static final int MIN_CYLINDER = 0; // Minimum cylinder number
 
     // FIFO (First In, First Out) Disk Scheduling Algorithm
     static void fifo(int[] requests, int head) {
+        System.out.println("FIFO Disk Scheduling Algorithm:");
         int totalSeekTime = 0;
         int currentHead = head;
 
         for (int request : requests) {
             totalSeekTime += Math.abs(currentHead - request);
             currentHead = request;
+            System.out.println(currentHead);
         }
 
-        System.out.println("FIFO Disk Scheduling Algorithm:");
         System.out.println("Total Seek Time: " + totalSeekTime);
     }
 
     // SCAN (Elevator) Disk Scheduling Algorithm
     static void scan(int[] requests, int head) {
+        System.out.println("SCAN Disk Scheduling Algorithm:");
         int totalSeekTime = 0;
         int currentHead = head;
         boolean directionUp = true;
@@ -535,7 +537,8 @@ public class DiskScheduling {
         // Find the index where the head is located
         int index = Arrays.binarySearch(requests, head);
         if (index < 0) {
-            // If head is not in the requests array, find the index where it should be inserted
+            // If head is not in the requests array, find the index where it should be
+            // inserted
             index = -index - 1;
         }
 
@@ -543,24 +546,27 @@ public class DiskScheduling {
         for (int i = index; i < requests.length; i++) {
             totalSeekTime += Math.abs(currentHead - requests[i]);
             currentHead = requests[i];
+            System.out.println(currentHead);
         }
 
         // Change direction and continue scanning until the beginning
         totalSeekTime += Math.abs(currentHead - MAX_CYLINDER);
         currentHead = MAX_CYLINDER;
+        System.out.println(currentHead);
         directionUp = false;
 
         for (int i = index - 1; i >= 0; i--) {
             totalSeekTime += Math.abs(currentHead - requests[i]);
             currentHead = requests[i];
+            System.out.println(currentHead);
         }
 
-        System.out.println("SCAN Disk Scheduling Algorithm:");
         System.out.println("Total Seek Time: " + totalSeekTime);
     }
 
     // C-SCAN (Circular SCAN) Disk Scheduling Algorithm
     static void cScan(int[] requests, int head) {
+        System.out.println("C-SCAN Disk Scheduling Algorithm:");
         int totalSeekTime = 0;
         int currentHead = head;
 
@@ -569,7 +575,8 @@ public class DiskScheduling {
         // Find the index where the head is located
         int index = Arrays.binarySearch(requests, head);
         if (index < 0) {
-            // If head is not in the requests array, find the index where it should be inserted
+            // If head is not in the requests array, find the index where it should be
+            // inserted
             index = -index - 1;
         }
 
@@ -577,24 +584,26 @@ public class DiskScheduling {
         for (int i = index; i < requests.length; i++) {
             totalSeekTime += Math.abs(currentHead - requests[i]);
             currentHead = requests[i];
+            System.out.println(currentHead);
         }
 
         // Move to the beginning of the disk
         totalSeekTime += Math.abs(currentHead - MIN_CYLINDER);
         currentHead = MIN_CYLINDER;
+        System.out.println(currentHead);
 
         // Continue scanning until reaching the head position again
         for (int i = 0; i < index; i++) {
             totalSeekTime += Math.abs(currentHead - requests[i]);
             currentHead = requests[i];
+            System.out.println(currentHead);
         }
 
-        System.out.println("C-SCAN Disk Scheduling Algorithm:");
         System.out.println("Total Seek Time: " + totalSeekTime);
     }
 
     public static void main(String[] args) {
-        int[] requests = {98, 183, 37, 122, 14, 124, 65, 67}; // Example disk requests
+        int[] requests = { 98, 183, 37, 122, 14, 124, 65, 67 }; // Example disk requests
         int head = 53; // Example initial head position
 
         Scanner scanner = new Scanner(System.in);
@@ -628,6 +637,7 @@ public class DiskScheduling {
         scanner.close();
     }
 }
+
 ```
 Output
 ```
