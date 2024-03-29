@@ -333,7 +333,7 @@ Philosopher 4 is eating!
 Philosopher 4 has finished
 ```
 # Program 4 - Continous Allocation
-```
+```java
 import java.util.*;
 
 public class Continous_Allocation {
